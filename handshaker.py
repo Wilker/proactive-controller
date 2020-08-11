@@ -1,6 +1,7 @@
 from scapy.all import *
-from scapy.contrib.openflow import *
+from scapy.contrib.openflow3 import *
 from utils.log import init_logger
+import traceback
 
 
 class Handshaker():
@@ -30,14 +31,12 @@ class Handshaker():
 
     def __isMessageHello__(self, msg):
         try:
-            self.logger.info(OpenFlow(msg).show2())
             if (OpenFlow(msg).type == 0):
                 return True
             else:
                 return False
         except Exception as ex:
-            self.logger.error("Not hello")
-            self.logger.error(ex)
+            traceback.print_exc()
 
     def __isMessageFeatureReply__(self, msg):
         try:

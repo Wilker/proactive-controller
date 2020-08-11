@@ -12,7 +12,7 @@ class Controller:
 
     def await_switch_connection(self):
         switch_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-        switch_socket.bind((self.address, self.port))
+        switch_socket.bind((self.address, int(self.port)))
         self.logger.info("Controller Started on port: {}".format(self.port))
         switch_socket.listen(10)
         while True:

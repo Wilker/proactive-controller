@@ -1,8 +1,4 @@
-import socket
-from threading import Thread
 from scapy.all import *
-from scapy.contrib.openflow import *
-from handshaker import Handshaker
 from utils.log import init_logger
 from controller import Controller
 
