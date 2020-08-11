@@ -18,7 +18,7 @@ class Controller:
         while True:
             self.logger.info("Listening Connections")
             self.switch_conn, switch_address = switch_socket.accept()
-            self.logger.info("Novo switch Conectado" + str(switch_address))
+            self.logger.info("New switch Connection from:" + str(switch_address))
             self.switches.append(Switch(self.switch_conn, switch_address).start())
 
     def start(self):

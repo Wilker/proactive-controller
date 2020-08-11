@@ -1,45 +1,50 @@
 from scapy.all import *
 from scapy.contrib.openflow import *
+from utils.log import init_logger
 
 
 class Handshaker():
     def __init__(self, switchConn):
         self.switchConn = switchConn
+        self.logger = init_logger(__name__, testing_mode=False)
 
     def doHandShake(self):
         try:
-            print("Tentando handkshake")
-            data = self.switchConn.recv(1024)
-            if self.__isMessageHello__(data):
+            self.logger.info("WAITING OPEN_FLOW_HELLO")
+            for i in range(0, 10):
+                data = self.switchConn.recv(1024)
+                OpenFlow(data).show2()
+               # if self.__isMessageHello__(data):
                 hello = OFPTHello(xid=4294967295).build()
-                print("Enviando hello")
+                self.logger.info("SENDING OF_HELLO")
                 self.switchConn.sendall(hello)
-                print("Enviando features Request")
+                self.logger.info("SENDING OF_FEATURE_REQUEST")
                 feature_request = OFPTFeaturesRequest(xid=4294967295).build()
                 self.switchConn.sendall(feature_request)
                 data = self.switchConn.recv(1024)
                 if self.__isMessageFeatureReply__(data):
-                    print("Chegou no fim")
+                    self.logger.info("HANDSHAKE FINISHED!")
                     return data
         except Exception as ex:
-            print(ex)
+            self.logger.info(ex)
 
     def __isMessageHello__(self, msg):
         try:
+            self.logger.info(OpenFlow(msg).show2())
             if (OpenFlow(msg).type == 0):
                 return True
             else:
                 return False
         except Exception as ex:
-            print("checa se msg e hello")
-            print(ex)
+            self.logger.error("Not hello")
+            self.logger.error(ex)
 
-    def __isMessageFeatureReply__(selfs, msg):
+    def __isMessageFeatureReply__(self, msg):
         try:
             if (OpenFlow(msg).type == 6):
                 return True
             else:
                 return False
         except Exception as ex:
-            print("Checka se msg e feature reply")
-            print(ex)
+            self.logger.info("Checka se msg e feature reply")
+            self.logger.info(ex)
