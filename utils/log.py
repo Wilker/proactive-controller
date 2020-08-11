@@ -5,6 +5,7 @@ def init_logger(dunder_name, testing_mode) -> logging.Logger:
     log_format = (
         '[%(asctime)s]'
         '[%(name)s]'
+        '[%(threadName)s]'
         '[%(funcName)s]'
         '[%(levelname)s] - '
         '%(message)s'
