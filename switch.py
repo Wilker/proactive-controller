@@ -19,7 +19,7 @@ class Switch(Thread):
 
     def execute(self):
         ofhandler = OpenFlowHandler(self.switchConn)
-        ofhandler.sendArpToControllerFlodMod()
+        ofhandler.sendArpToControllerFlowMod()
         while True:
             data = self.switchConn.recv(1024)
             ofhandler.process_message(data)
