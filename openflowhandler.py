@@ -1,5 +1,6 @@
 from scapy.all import *
 from scapy.contrib.openflow3 import *
+from arp_processor import ArpProcessor
 from utils.log import init_logger
 import traceback
 
@@ -21,7 +22,7 @@ class OpenFlowHandler:
 
         if self.__isMessagePacketIn__(data):
             self.logger.info("received OFPT Pakcet IN")
-            OFPTPacketIn(data).show2(dump=True)
+            self.process_packet_in(data)
 
     def send_echo_reply(self):
         echo_reply = OFPTEchoReply(xid=4294967295).build()
@@ -46,4 +47,9 @@ class OpenFlowHandler:
         self.switchConn.sendall(flowmod)
 
     def process_packet_in(self, data):
-        pass
+        packet_in = OpenFlow(data)
+        if packet_in.data.name is 'Ethernet':
+            payload = packet_in.data.payload
+            if payload.name is 'ARP':
+                packt_out = ArpProcessor.build_packet_out(packet_in)
+                self.switchConn.sendall(packt_out.build())
