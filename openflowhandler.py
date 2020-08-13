@@ -52,4 +52,5 @@ class OpenFlowHandler:
             payload = packet_in.data.payload
             if payload.name is 'ARP':
                 packt_out = ArpProcessor.build_packet_out(packet_in)
+                self.logger.info("sending Packet-out")
                 self.switchConn.sendall(packt_out.build())
