@@ -11,7 +11,7 @@ class ArpProcessor:
     def build_packet_out(pkt):
         action_flood = OFPATOutput(type=0,
                                    len=16,
-                                   port=0xfffb,
+                                   port=0xfffffffb,
                                    max_len=0)
         return OFPTPacketOut(version=4,
                              type=13,
