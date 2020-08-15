@@ -11,12 +11,17 @@ class RoleManager:
         MASTER = 2
         SLAVE = 3
 
-    def __init__(self, switch):
+        @staticmethod
+        def get_role_from_value(value):
+            return RoleManager.ROLE.MASTER if value == 2 \
+                else RoleManager.ROLE.EQUAL if value == 1 \
+                else RoleManager.ROLE.SLAVE
+
+    def __init__(self, switch, role=ROLE.MASTER):
         self.switch = switch
         self.seed = 0
         self.logger = init_logger(__name__, testing_mode=False)
-        self.role = self.set_role(RoleManager.ROLE.MASTER)
-
+        self.role = self.set_role(role)
 
     def set_role(self, role):
         self.seed = OFTPRoleProcessor.new_generation_id(self.seed)

@@ -13,4 +13,4 @@ class OFTPRoleProcessor:
 
     @staticmethod
     def new_generation_id(value):
-        value += 1
+        return value + 1

@@ -8,10 +8,11 @@ from role_manager import RoleManager
 
 
 class Switch(Thread):
-    def __init__(self, switchConn, switchAddr):
+    def __init__(self, switchConn, switchAddr, role):
         super().__init__()
         self.switchConn = switchConn
         self.switchAddr = switchAddr
+        self.role = role
         self.role_manager = ''
         self.logger = init_logger(__name__, testing_mode=False)
 
@@ -22,7 +23,7 @@ class Switch(Thread):
     def execute(self):
         ofhandler = OpenFlowHandler(self)
         ofhandler.sendArpToControllerFlowMod()
-        self.role_manager = RoleManager(self)
+        self.role_manager = RoleManager(self, role=self.role)
         while True:
             data = self.switchConn.recv(1024)
             ofhandler.process_message(data)

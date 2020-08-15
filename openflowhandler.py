@@ -65,9 +65,9 @@ class OpenFlowHandler:
 
     def process_packet_in(self, data):
         packet_in = OpenFlow(data)
-        if packet_in.data.name is 'Ethernet':
+        if packet_in.data.name == 'Ethernet':
             payload = packet_in.data.payload
-            if payload.name is 'ARP':
+            if payload.name == 'ARP':
                 packt_out = ArpProcessor.build_packet_out(packet_in)
                 self.logger.info("sending Packet-out")
                 self.switch.switchConn.sendall(packt_out.build())
