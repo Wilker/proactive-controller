@@ -2,7 +2,6 @@ from scapy.all import *
 from scapy.contrib.openflow3 import *
 from utils.log import init_logger
 import traceback
-from enum import Enum
 
 
 class ArpProcessor:
